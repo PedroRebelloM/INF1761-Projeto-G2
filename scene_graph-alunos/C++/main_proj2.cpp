@@ -109,23 +109,23 @@ static void initialize(void) {
       TextureSet::Make({woodTex.get(), defaultSampler.get()});
   main.shader->AddTextureSet(texSetMadeira.get());
 
-  TexturePtr paperTex =
-      Texture::Make(ctx->GetDevice(), "decal_texture", "../images/paper.jpg");
+  TexturePtr snowTex =
+      Texture::Make(ctx->GetDevice(), "decal_texture", "../images/snow.jpg");
   TextureSetPtr texSetCaixa =
-      TextureSet::Make({paperTex.get(), defaultSampler.get()});
+      TextureSet::Make({snowTex.get(), defaultSampler.get()});
   main.shader->AddTextureSet(texSetCaixa.get());
 
-  TexturePtr snowTex = Texture::Make(ctx->GetDevice(), "decal_texture",
-                                     "../images/snow_02_disp_4k.png");
-  TextureSetPtr texSetSnow =
-      TextureSet::Make({snowTex.get(), defaultSampler.get()});
-  main.shader->AddTextureSet(texSetSnow.get());
+  TexturePtr barrelTex =
+      Texture::Make(ctx->GetDevice(), "decal_texture", "../images/barrel.jpg");
+  TextureSetPtr texSetBarrel =
+      TextureSet::Make({barrelTex.get(), defaultSampler.get()});
+  main.shader->AddTextureSet(texSetBarrel.get());
 
-  TexturePtr rockyTex = Texture::Make(ctx->GetDevice(), "decal_texture",
-                                      "../images/rocky_terrain_03_disp_4k.png");
-  TextureSetPtr texSetRocky =
-      TextureSet::Make({rockyTex.get(), defaultSampler.get()});
-  cut.shader->AddTextureSet(texSetRocky.get());
+  TexturePtr mudTex =
+      Texture::Make(ctx->GetDevice(), "decal_texture", "../images/mud.jpg");
+  TextureSetPtr texSetMud =
+      TextureSet::Make({mudTex.get(), defaultSampler.get()});
+  cut.shader->AddTextureSet(texSetMud.get());
 
   PhongMaterialPtr matTampo = PhongMaterial::Make(1.0f, 1.0f, 1.0f);
   matTampo->SetShininess(8.0f);
@@ -139,17 +139,17 @@ static void initialize(void) {
   PhongMaterialPtr matPeCiano = PhongMaterial::Make(0.00f, 0.80f, 0.85f);
   matPeCiano->SetShininess(8.0f);
 
-  PhongMaterialPtr matCaixa = PhongMaterial::Make(0.95f, 0.82f, 0.35f);
-  matCaixa->SetSpecular(0.9f, 0.85f, 0.5f);
-  matCaixa->SetShininess(32.0f);
+  PhongMaterialPtr matCaixa = PhongMaterial::Make(1.0f, 1.0f, 1.0f);
+  matCaixa->SetSpecular(0.8f, 0.85f, 0.95f);
+  matCaixa->SetShininess(48.0f);
 
-  PhongMaterialPtr matEsferaNeve = PhongMaterial::Make(1.0f, 1.0f, 1.0f);
-  matEsferaNeve->SetSpecular(0.8f, 0.85f, 0.95f);
-  matEsferaNeve->SetShininess(60.0f);
+  PhongMaterialPtr matEsferaBarrel = PhongMaterial::Make(1.0f, 1.0f, 1.0f);
+  matEsferaBarrel->SetSpecular(0.7f, 0.7f, 0.7f);
+  matEsferaBarrel->SetShininess(32.0f);
 
-  PhongMaterialPtr matEsferaRocha = PhongMaterial::Make(1.0f, 1.0f, 1.0f);
-  matEsferaRocha->SetSpecular(0.7f, 0.7f, 0.7f);
-  matEsferaRocha->SetShininess(40.0f);
+  PhongMaterialPtr matEsferaMud = PhongMaterial::Make(1.0f, 1.0f, 1.0f);
+  matEsferaMud->SetSpecular(0.7f, 0.7f, 0.7f);
+  matEsferaMud->SetShininess(40.0f);
 
   main.shader->AddMaterial(matTampo.get());
   main.shader->AddMaterial(matPeRosa.get());
@@ -157,8 +157,8 @@ static void initialize(void) {
   main.shader->AddMaterial(matPeAzul.get());
   main.shader->AddMaterial(matPeCiano.get());
   main.shader->AddMaterial(matCaixa.get());
-  main.shader->AddMaterial(matEsferaNeve.get());
-  cut.shader->AddMaterial(matEsferaRocha.get());
+  main.shader->AddMaterial(matEsferaBarrel.get());
+  cut.shader->AddMaterial(matEsferaMud.get());
 
   TransformPtr trfTampo = Transform::Make();
   trfTampo->Translate(0.0f, 1.2f, 0.0f);
@@ -198,25 +198,25 @@ static void initialize(void) {
   trfCaixa->Scale(0.75f, 0.50f, 0.75f);
   NodePtr nodeCaixa = Node::Make(trfCaixa, {matCaixa, texSetCaixa}, {cube});
 
-  TransformPtr trfEsferaNeve = Transform::Make();
-  trfEsferaNeve->Translate(0.0f, 0.72f, 0.0f);
-  trfEsferaNeve->Scale(0.22f, 0.22f, 0.22f);
-  NodePtr nodeEsferaNeve =
-      Node::Make(trfEsferaNeve, {matEsferaNeve, texSetSnow}, {sphere});
+  TransformPtr trfEsferaBarrel = Transform::Make();
+  trfEsferaBarrel->Translate(0.0f, 0.72f, 0.0f);
+  trfEsferaBarrel->Scale(0.22f, 0.22f, 0.22f);
+  NodePtr nodeEsferaBarrel =
+      Node::Make(trfEsferaBarrel, {matEsferaBarrel, texSetBarrel}, {sphere});
 
   NodePtr nodeCaixaAgrupada =
-      Node::Make(trfCaixaPai, {}, {}, {nodeCaixa, nodeEsferaNeve});
+      Node::Make(trfCaixaPai, {}, {}, {nodeCaixa, nodeEsferaBarrel});
 
-  TransformPtr trfEsferaRocha = Transform::Make();
-  trfEsferaRocha->Translate(0.75f, 1.65f, 0.25f);
-  trfEsferaRocha->Rotate(45.0f, 0.0f, 1.0f, 0.0f);
-  trfEsferaRocha->Scale(0.30f, 0.30f, 0.30f);
-  NodePtr nodeEsferaRocha = Node::Make(cut.pipeline, trfEsferaRocha,
-                                       {matEsferaRocha, texSetRocky}, {sphere});
+  TransformPtr trfEsferaMud = Transform::Make();
+  trfEsferaMud->Translate(0.75f, 1.65f, 0.25f);
+  trfEsferaMud->Rotate(45.0f, 0.0f, 1.0f, 0.0f);
+  trfEsferaMud->Scale(0.30f, 0.30f, 0.30f);
+  NodePtr nodeEsferaMud = Node::Make(cut.pipeline, trfEsferaMud,
+                                     {matEsferaMud, texSetMud}, {sphere});
 
   NodePtr root =
       Node::Make(main.pipeline, {nodeTampo, nodePe1, nodePe2, nodePe3, nodePe4,
-                                 nodeCaixaAgrupada, nodeEsferaRocha});
+                                 nodeCaixaAgrupada, nodeEsferaMud});
 
   scene = Scene::Make(root);
 }
