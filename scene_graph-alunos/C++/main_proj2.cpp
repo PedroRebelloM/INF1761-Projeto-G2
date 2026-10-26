@@ -31,7 +31,7 @@ static Camera3DPtr camera;
 static ArcballPtr arcball;
 
 static const float kCutHeight = 1.65f;
-static const float kFogDensity = 0.07f;
+static const float kFogDensity = 0.1f;
 
 struct ShaderSetup {
   ShaderPtr shader;
